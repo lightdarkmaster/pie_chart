@@ -13,6 +13,3 @@ This Pie Chart widget provides a visual representation of the distribution of le
 
 You can customize the appearance of the widget by adding CSS styles to the widget's configuration page.
 
-## Troubleshooting
-
-If you encounter any issues with the widget, please contact the Zoho CRM support team for assistance.
