@@ -9,6 +9,10 @@ This Pie Chart widget provides a visual representation of the distribution of le
 3. The widget will display a pie chart with each slice representing the source of the leads.
 4. Hover over each slice to view the percentage of leads from that source.
 5. It will also display a tabular data for the legends in the zoho crm.
+6. Displayed details data for the overall leads sources of all recorded records.
+
+
+
 
 ## Customization
 
