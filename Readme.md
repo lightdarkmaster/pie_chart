@@ -2,6 +2,9 @@
 
 This Pie Chart widget provides a visual representation of the distribution of leads by source in your Zoho CRM account.
 
+# Important NOTE:
+1. This Component will only works in zoho crm platforms any other platforms is not supported with this.
+
 ## How to use
 
 1. Install the widget in your Zoho CRM account.
