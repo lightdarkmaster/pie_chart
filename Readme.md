@@ -4,6 +4,7 @@ This Pie Chart widget provides a visual representation of the distribution of le
 
 # Important NOTE:
 1. This Component will only works in zoho crm platforms any other platforms is not supported with this.
+2. This is not a standalone components, it still needs to be integrated in the ZOHO CRM platform to work and utilize its functions.
 
 ## How to use
 
