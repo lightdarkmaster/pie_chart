@@ -82,51 +82,70 @@ function renderVisualization() {
 function renderPieChart(sources) {
     const pieChart = document.getElementById("pieChart");
     const pieLabels = document.getElementById("pieLabels");
+    const pieDividers = document.getElementById("pieDividers");
+
+    pieLabels.innerHTML = "";
+    pieDividers.innerHTML = "";
+
     let currentPercentage = 0;
     const gradientStops = [];
-    
-    pieLabels.innerHTML = "";
-    
+
+    const centerX = 200;
+    const centerY = 200;
+    const radiusInner = 90;   // inside text
+    const radiusOuter = 140;  // small slices push out
+
     sources.forEach((source, index) => {
         const count = leadSourceCounts[source];
         const percentage = (count / totalLeads) * 100;
         const color = getColor(index);
-        
-        gradientStops.push(`${color} ${currentPercentage}% ${currentPercentage + percentage}%`);
-        
-        if (percentage >= 5) {
-            const middlePercentage = currentPercentage + (percentage / 2);
-            const angle = (middlePercentage / 100) * 360 - 90;
-            const angleRad = (angle * Math.PI) / 180;
-            
-            const radius = 140;
-            const x = 200 + radius * Math.cos(angleRad);
-            const y = 200 + radius * Math.sin(angleRad);
-            
-            const label = document.createElement("div");
-            label.className = "pie-label";
-            label.style.left = `${x}px`;
-            label.style.top = `${y}px`;
-            
-            const sourceSpan = document.createElement("span");
-            sourceSpan.className = "pie-label-source";
-            sourceSpan.textContent = source.length > 15 ? source.substring(0, 12) + "..." : source;
-            
-            const percentageSpan = document.createElement("span");
-            percentageSpan.className = "pie-label-percentage";
-            percentageSpan.textContent = `${percentage.toFixed(1)}%`;
-            
-            label.appendChild(sourceSpan);
-            label.appendChild(percentageSpan);
-            pieLabels.appendChild(label);
-        }
-        
+
+        // Gradient
+        gradientStops.push(
+            `${color} ${currentPercentage}% ${currentPercentage + percentage}%`
+        );
+
+        // Angles
+        const startAngle = (currentPercentage / 100) * 360 - 90;
+        const midAngle = ((currentPercentage + percentage / 2) / 100) * 360 - 90;
+        const endAngle = ((currentPercentage + percentage) / 100) * 360 - 90;
+
+        const midRad = (midAngle * Math.PI) / 180;
+        const endRad = (endAngle * Math.PI) / 180;
+
+        // Divider line
+        const x2 = centerX + 200 * Math.cos(endRad);
+        const y2 = centerY + 200 * Math.sin(endRad);
+
+        const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
+        line.setAttribute("x1", centerX);
+        line.setAttribute("y1", centerY);
+        line.setAttribute("x2", x2);
+        line.setAttribute("y2", y2);
+        line.setAttribute("stroke", "#ffffff");
+        line.setAttribute("stroke-width", "2");
+        pieDividers.appendChild(line);
+
+        // Label positioning
+        const isSmallSlice = percentage < 4;
+        const labelRadius = isSmallSlice ? radiusOuter : radiusInner;
+
+        const x = centerX + labelRadius * Math.cos(midRad);
+        const y = centerY + labelRadius * Math.sin(midRad);
+
+        const label = document.createElement("div");
+        label.className = "pie-label";
+        label.style.left = `${x}px`;
+        label.style.top = `${y}px`;
+        label.textContent = `${percentage.toFixed(1)}%`;
+        pieLabels.appendChild(label);
+
         currentPercentage += percentage;
     });
-    
-    const gradient = `conic-gradient(${gradientStops.join(", ")})`;
-    pieChart.style.background = gradient;
+
+    pieChart.style.background = `conic-gradient(${gradientStops.join(", ")})`;
 }
+
 
 function renderLegend(sources) {
     const legend = document.getElementById("legend");

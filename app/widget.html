@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,25 +8,30 @@
     <link rel="stylesheet" href="./css/style.css">
     <script src="https://live.zwidgets.com/js-sdk/1.4/ZohoEmbededAppSDK.min.js"></script>
 </head>
+
 <body>
     <div class="container">
         <h2>Lead Source Distribution</h2>
-        
+
         <div id="loadingDiv" class="loading">
             <div class="spinner"></div>
             <p>Loading lead data...</p>
         </div>
-        
+
         <div id="contentDiv" class="content" style="display: none;">
             <div class="chart-section">
                 <div class="pie-container">
                     <div id="pieChart" class="pie-chart"></div>
+                    <svg id="pieDividers" width="400" height="400" viewBox="0 0 400 400"
+                        style="position:absolute; top:0; left:0; pointer-events:none;">
+                    </svg>
+
                     <div id="pieLabels" class="pie-labels"></div>
                 </div>
             </div>
-            
+
             <div id="legend" class="legend"></div>
-            
+
             <div class="table-container">
                 <table id="dataTable">
                     <thead>
@@ -39,12 +45,13 @@
                 </table>
             </div>
         </div>
-        
+
         <div id="errorDiv" class="error" style="display: none;">
             <p id="errorMessage"></p>
         </div>
     </div>
-    
+
     <script src="./scripts/scripts.js"></script>
 </body>
+
 </html>

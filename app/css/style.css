@@ -98,17 +98,28 @@ h2 {
 .pie-label {
     position: absolute;
     transform: translate(-50%, -50%);
-    background: rgba(255, 255, 255, 0.95);
-    padding: 6px 10px;
-    border-radius: 4px;
-    font-size: 12px;
-    font-weight: 600;
-    color: #2c3e50;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    font-size: 13px;
+    font-weight: 700;
+    color: #ffffff;
+    text-shadow: 0 1px 3px rgba(0,0,0,0.7);
+    pointer-events: none;
     white-space: nowrap;
-    text-align: center;
-    line-height: 1.4;
 }
+
+
+.pie-label-source {
+    display: block;
+    font-size: 10px;
+    font-weight: 500;
+    opacity: 0.9;
+}
+
+.pie-label-percentage {
+    display: block;
+    font-size: 14px;
+    font-weight: 700;
+}
+
 
 .pie-label-source {
     display: block;
@@ -257,5 +268,17 @@ tbody tr:last-child td {
     
     th, td {
         padding: 8px;
+    }
+}
+
+@media (max-width: 768px) {
+    .pie-label {
+        font-size: 11px;
+    }
+
+    #pieDividers {
+        width: 300px;
+        height: 300px;
+        viewBox: 0 0 400 400;
     }
 }
