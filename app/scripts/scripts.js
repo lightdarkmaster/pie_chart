@@ -214,6 +214,7 @@ function renderStats(sources) {
 
 /* ── Error state ── */
 function showError(message) {
+<<<<<<< HEAD
     document.getElementById("loadingDiv").style.display  = "none";
     document.getElementById("contentDiv").style.display  = "none";
     document.getElementById("errorDiv").style.display    = "";
@@ -224,4 +225,10 @@ function showError(message) {
 function polarToXY(cx, cy, r, angleDeg) {
     var rad = (angleDeg - 90) * Math.PI / 180;
     return { x: cx + r * Math.cos(rad), y: cy + r * Math.sin(rad) };
+=======
+    document.getElementById("loadingDiv").style.display = "none";
+    document.getElementById("contentDiv").style.display = "none";
+    document.getElementById("errorDiv").style.display = "block";
+    document.getElementById("errorMessage").textContent = message;
+>>>>>>> f844280228f7aa0097c01cf64598fad8a59dc5b3
 }
