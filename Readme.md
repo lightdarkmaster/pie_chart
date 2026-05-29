@@ -1,5 +1,5 @@
-# Pie Chart Readme
-
+# Pie Chart
+<img src="./screenshots/image.png" width="100%">.
 This Pie Chart widget provides a visual representation of the distribution of leads by source in your Zoho CRM account.
 
 # Important NOTE:
