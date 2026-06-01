@@ -52,7 +52,7 @@
             <div class="panel-left">
                 <div class="donut-wrap">
                     <svg id="donutSvg" width="200" height="200" viewBox="0 0 200 200" role="img">
-                        <title>Donut chart showing lead source distribution</title>
+                        <!-- <title>Donut chart showing lead source distribution</title> -->
                     </svg>
                     <div class="donut-center">
                         <span class="donut-total" id="donutTotal">0</span>
@@ -104,6 +104,16 @@
             </div>
         </div>
 
+    </div>
+
+    <!-- Tooltip: shown on donut segment hover -->
+    <div id="chartTooltip" class="chart-tooltip" style="display:none;" role="tooltip" aria-live="polite">
+        <div class="tooltip-source" id="tooltipSource"></div>
+        <div class="tooltip-stats">
+            <span class="tooltip-count" id="tooltipCount"></span>
+            <span class="tooltip-sep">·</span>
+            <span class="tooltip-pct" id="tooltipPct"></span>
+        </div>
     </div>
 
     <script src="./scripts/scripts.js"></script>
