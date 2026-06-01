@@ -427,3 +427,107 @@ tbody tr:hover td {
         display: none;
     }
 }
+/* ============================================================
+   ENHANCEMENT 1 — Chart Tooltip
+   ============================================================ */
+
+/* Floating tooltip shown on donut segment hover */
+.chart-tooltip {
+    position: fixed;          /* fixed so it escapes any overflow:hidden parents */
+    z-index: 9999;
+    background: #1a2332;
+    color: #ffffff;
+    border-radius: 8px;
+    padding: 8px 12px;
+    pointer-events: none;     /* never blocks mouse events */
+    box-shadow: 0 4px 16px rgba(0,0,0,0.22);
+    min-width: 140px;
+    max-width: 220px;
+    transition: opacity 0.15s ease, transform 0.15s ease;
+    opacity: 0;               /* fades in via JS class toggle */
+    transform: translateY(4px);
+}
+
+/* Visible state — toggled by JS */
+.chart-tooltip.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.tooltip-source {
+    font-size: 12px;
+    font-weight: 600;
+    color: #e2e8f0;
+    margin-bottom: 4px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.tooltip-stats {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 12px;
+}
+
+.tooltip-count {
+    font-weight: 700;
+    color: #ffffff;
+}
+
+.tooltip-sep {
+    color: #64748b;
+    font-size: 10px;
+}
+
+.tooltip-pct {
+    font-weight: 500;
+    color: #94a3b8;
+}
+
+/* Small colour swatch inside tooltip — set via inline style */
+.tooltip-swatch {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    margin-right: 5px;
+    vertical-align: middle;
+    flex-shrink: 0;
+}
+
+/* ============================================================
+   ENHANCEMENT 2 — Donut segment highlight state
+   Segments dim when sibling is active; active one is lifted
+   ============================================================ */
+
+/* When the SVG is in "highlight mode", all paths dim */
+#donutSvg.has-highlight path {
+    opacity: 0.28;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+    transform-origin: 100px 100px; /* SVG centre */
+}
+
+/* The highlighted segment stays fully visible and scales slightly */
+#donutSvg.has-highlight path.seg-active {
+    opacity: 1 !important;
+    transform: scale(1.04);
+    filter: drop-shadow(0 2px 6px rgba(0,0,0,0.18));
+}
+
+/* ============================================================
+   ENHANCEMENT 3 — Table row highlight state
+   ============================================================ */
+
+/* Highlighted row — triggered by chart hover or row self-hover */
+tbody tr.row-active td {
+    background: #eef4ff !important;
+}
+
+/* Source-name cell gets a subtle left accent bar */
+tbody tr.row-active td:nth-child(2) {
+    font-weight: 600;
+    color: #1a2332;
+    box-shadow: inset 3px 0 0 #3b7dd8;
+}

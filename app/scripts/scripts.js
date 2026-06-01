@@ -113,11 +113,24 @@ function renderVisualization() {
     document.getElementById("contentDiv").style.display = "";
 }
 
-/* ── Donut chart (replaces conic-gradient pie) ── */
-function renderPieChart(sources) {
-    var svg = document.getElementById("donutSvg");
+/* ── polarToXY: converts polar angle to SVG x/y coordinates ──
+   Required by renderPieChart to compute donut arc endpoints.   */
+function polarToXY(cx, cy, r, angleDeg) {
+    var rad = (angleDeg - 90) * (Math.PI / 180);
+    return {
+        x: cx + r * Math.cos(rad),
+        y: cy + r * Math.sin(rad)
+    };
+}
 
-    // Clear previous paths
+/* ── Donut chart (replaces conic-gradient pie) ── */
+/* ENHANCEMENT 1 & 2: Segments now show a tooltip on hover
+   and trigger two-way highlight with the data table.        */
+function renderPieChart(sources) {
+    var svg     = document.getElementById("donutSvg");
+    var tooltip = document.getElementById("chartTooltip");
+
+    // Clear previous paths (preserve the <title> element)
     while (svg.lastChild && svg.lastChild.tagName !== 'title') {
         svg.removeChild(svg.lastChild);
     }
@@ -146,13 +159,109 @@ function renderPieChart(sources) {
             " A" + ri + "," + ri + " 0 " + large + " 0 " + si.x + "," + si.y + " Z"
         );
         path.setAttribute("fill", color);
-        path.style.transition = "opacity 0.2s";
-        path.addEventListener("mouseenter", function () { path.setAttribute("opacity", "0.78"); });
-        path.addEventListener("mouseleave", function () { path.setAttribute("opacity", "1"); });
-        svg.appendChild(path);
 
+        // Store metadata on the element for retrieval in event handlers
+        path.dataset.source     = source;
+        path.dataset.count      = count;
+        path.dataset.percentage = percentage.toFixed(1);
+        path.dataset.index      = index;
+
+        /* ── ENHANCEMENT 1: Tooltip on segment mouseenter ── */
+        path.addEventListener("mouseenter", function (e) {
+            // Populate tooltip content
+            document.getElementById("tooltipSource").innerHTML =
+                '<span class="tooltip-swatch" style="background:' + color + '"></span>' + source;
+            document.getElementById("tooltipCount").textContent = count.toLocaleString() + " leads";
+            document.getElementById("tooltipPct").textContent   = percentage.toFixed(1) + "%";
+
+            // Show tooltip and position it near the cursor
+            tooltip.style.display = "block";
+            positionTooltip(tooltip, e);
+            requestAnimationFrame(function () { tooltip.classList.add("is-visible"); });
+
+            /* ── ENHANCEMENT 2: Chart → Table highlight ── */
+            activateHighlight(index);
+        });
+
+        // Track mouse movement so tooltip follows cursor
+        path.addEventListener("mousemove", function (e) {
+            positionTooltip(tooltip, e);
+        });
+
+        /* ── ENHANCEMENT 2: Clear highlights + hide tooltip on mouseleave ── */
+        path.addEventListener("mouseleave", function () {
+            tooltip.classList.remove("is-visible");
+            setTimeout(function () {
+                // Only hide if still not visible (avoids flicker when
+                // moving quickly to another segment)
+                if (!tooltip.classList.contains("is-visible")) {
+                    tooltip.style.display = "none";
+                }
+            }, 160);
+            clearHighlight();
+        });
+
+        svg.appendChild(path);
         startAngle = endAngle;
     });
+}
+
+/* ── ENHANCEMENT 1: Tooltip positioning helper ──
+   Keeps the tooltip inside the viewport with a small offset.  */
+function positionTooltip(tooltip, mouseEvent) {
+    var offset  = 14;
+    var tw      = tooltip.offsetWidth  || 160;
+    var th      = tooltip.offsetHeight || 52;
+    var vw      = window.innerWidth;
+    var vh      = window.innerHeight;
+
+    var left = mouseEvent.clientX + offset;
+    var top  = mouseEvent.clientY + offset;
+
+    // Flip horizontally if it would overflow right edge
+    if (left + tw > vw - 8) { left = mouseEvent.clientX - tw - offset; }
+    // Flip vertically if it would overflow bottom edge
+    if (top  + th > vh - 8) { top  = mouseEvent.clientY - th - offset; }
+
+    tooltip.style.left = left + "px";
+    tooltip.style.top  = top  + "px";
+}
+
+/* ── ENHANCEMENT 2: Activate highlight by source index ──
+   Dims all segments except the active one; highlights table row. */
+function activateHighlight(activeIndex) {
+    var svg  = document.getElementById("donutSvg");
+    var rows = document.querySelectorAll("#tableBody tr");
+
+    // Put SVG into "highlight mode" — CSS dims all non-active paths
+    svg.classList.add("has-highlight");
+
+    // Mark the active segment
+    var paths = svg.querySelectorAll("path");
+    paths.forEach(function (p) {
+        if (parseInt(p.dataset.index, 10) === activeIndex) {
+            p.classList.add("seg-active");
+        } else {
+            p.classList.remove("seg-active");
+        }
+    });
+
+    // Highlight the matching table row
+    rows.forEach(function (row) {
+        if (parseInt(row.dataset.index, 10) === activeIndex) {
+            row.classList.add("row-active");
+        } else {
+            row.classList.remove("row-active");
+        }
+    });
+}
+
+/* ── ENHANCEMENT 2: Clear all highlights ── */
+function clearHighlight() {
+    var svg  = document.getElementById("donutSvg");
+    svg.classList.remove("has-highlight");
+    svg.querySelectorAll("path").forEach(function (p) { p.classList.remove("seg-active"); });
+    document.querySelectorAll("#tableBody tr").forEach(function (r) { r.classList.remove("row-active"); });
 }
 
 /* ── Legend ── */
@@ -175,7 +284,10 @@ function renderLegend(sources) {
     });
 }
 
-/* ── Table ── */
+/* ── Table ──
+   ENHANCEMENT 3: Each row stores its source index via data-index
+   and wires mouseenter/mouseleave to activateHighlight/clearHighlight
+   so hovering a row highlights the corresponding donut segment.     */
 function renderTable(sources) {
     var tableBody = document.getElementById("tableBody");
     tableBody.innerHTML = "";
@@ -187,6 +299,10 @@ function renderTable(sources) {
         var light      = getLightColor(index);
 
         var row = document.createElement("tr");
+
+        // Store index so activateHighlight/clearHighlight can match segments
+        row.dataset.index = index;
+
         row.innerHTML =
             '<td class="col-dot"><span class="src-dot" style="background:' + color + '"></span></td>' +
             '<td>' + source + '</td>' +
@@ -197,6 +313,14 @@ function renderTable(sources) {
                 '</div>' +
             '</td>' +
             '<td><span class="pct-chip" style="background:' + light + '; color:' + color + '">' + percentage + '%</span></td>';
+
+        /* ── ENHANCEMENT 3: Table row → Chart highlight ── */
+        row.addEventListener("mouseenter", function () {
+            activateHighlight(index);
+        });
+        row.addEventListener("mouseleave", function () {
+            clearHighlight();
+        });
 
         tableBody.appendChild(row);
     });
