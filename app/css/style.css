@@ -41,6 +41,8 @@ body {
     margin-bottom: 20px;
     padding-bottom: 16px;
     border-bottom: 1px solid #f0f2f5;
+    flex-wrap: wrap;
+    gap: 10px;
 }
 
 .widget-header-left {
@@ -66,6 +68,56 @@ body {
     font-weight: 600;
     color: #1a2332;
     letter-spacing: -0.01em;
+}
+
+/* ── NEW: view controls (toggle + badge grouped together) ── */
+.view-controls {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* ── NEW: Donut / Radar toggle pill ── */
+.view-toggle {
+    display: flex;
+    background: #f4f6f9;
+    border: 1px solid #e8ecf1;
+    border-radius: 8px;
+    padding: 3px;
+    gap: 2px;
+}
+
+.view-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 5px 12px;
+    border: none;
+    border-radius: 6px;
+    background: transparent;
+    color: #6b7a90;
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.15s, color 0.15s, box-shadow 0.15s;
+    white-space: nowrap;
+    font-family: inherit;
+}
+
+.view-btn:hover:not(.view-btn--active) {
+    background: #eef4ff;
+    color: #3b7dd8;
+}
+
+.view-btn--active {
+    background: #ffffff;
+    color: #3b7dd8;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.10);
+    font-weight: 600;
+}
+
+.view-btn svg {
+    flex-shrink: 0;
 }
 
 .widget-badge {
@@ -131,7 +183,7 @@ body {
     font-weight: 500;
 }
 
-/* ── Content: landscape two-column grid ── */
+/* ── Content: landscape two-column grid (DONUT VIEW) ── */
 .content-layout {
     display: grid;
     grid-template-columns: 210px 1fr;
@@ -190,7 +242,7 @@ body {
     font-weight: 400;
 }
 
-/* ── Legend ── */
+/* ── Legend (shared styles used by both donut and radar) ── */
 .legend {
     width: 100%;
     display: flex;
@@ -235,7 +287,7 @@ body {
     flex-shrink: 0;
 }
 
-/* ── RIGHT panel ── */
+/* ── RIGHT panel (donut view) ── */
 .panel-right {
     display: flex;
     flex-direction: column;
@@ -427,28 +479,29 @@ tbody tr:hover td {
         display: none;
     }
 }
+
 /* ============================================================
    ENHANCEMENT 1 — Chart Tooltip
+   (shared by both donut and radar; .radar-tooltip positions
+    relative to the radar-chart-wrap instead of fixed)
    ============================================================ */
 
-/* Floating tooltip shown on donut segment hover */
 .chart-tooltip {
-    position: fixed;          /* fixed so it escapes any overflow:hidden parents */
+    position: fixed;
     z-index: 9999;
     background: #1a2332;
     color: #ffffff;
     border-radius: 8px;
     padding: 8px 12px;
-    pointer-events: none;     /* never blocks mouse events */
+    pointer-events: none;
     box-shadow: 0 4px 16px rgba(0,0,0,0.22);
     min-width: 140px;
     max-width: 220px;
     transition: opacity 0.15s ease, transform 0.15s ease;
-    opacity: 0;               /* fades in via JS class toggle */
+    opacity: 0;
     transform: translateY(4px);
 }
 
-/* Visible state — toggled by JS */
 .chart-tooltip.is-visible {
     opacity: 1;
     transform: translateY(0);
@@ -486,7 +539,6 @@ tbody tr:hover td {
     color: #94a3b8;
 }
 
-/* Small colour swatch inside tooltip — set via inline style */
 .tooltip-swatch {
     display: inline-block;
     width: 8px;
@@ -499,17 +551,14 @@ tbody tr:hover td {
 
 /* ============================================================
    ENHANCEMENT 2 — Donut segment highlight state
-   Segments dim when sibling is active; active one is lifted
    ============================================================ */
 
-/* When the SVG is in "highlight mode", all paths dim */
 #donutSvg.has-highlight path {
     opacity: 0.28;
     transition: opacity 0.2s ease, transform 0.2s ease;
-    transform-origin: 100px 100px; /* SVG centre */
+    transform-origin: 100px 100px;
 }
 
-/* The highlighted segment stays fully visible and scales slightly */
 #donutSvg.has-highlight path.seg-active {
     opacity: 1 !important;
     transform: scale(1.04);
@@ -520,14 +569,168 @@ tbody tr:hover td {
    ENHANCEMENT 3 — Table row highlight state
    ============================================================ */
 
-/* Highlighted row — triggered by chart hover or row self-hover */
 tbody tr.row-active td {
     background: #eef4ff !important;
 }
 
-/* Source-name cell gets a subtle left accent bar */
 tbody tr.row-active td:nth-child(2) {
     font-weight: 600;
     color: #1a2332;
     box-shadow: inset 3px 0 0 #3b7dd8;
+}
+
+/* ============================================================
+   NEW — Radar Chart View
+   ============================================================ */
+
+/* Outer layout: stats on top, chart+legend below */
+.radar-layout {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    animation: fadeIn 0.4s ease;
+}
+
+.radar-stats {
+    /* inherits .stats-grid */
+}
+
+/* Bottom row: SVG left, legend right */
+.radar-body {
+    display: grid;
+    grid-template-columns: 420px 1fr;
+    gap: 24px;
+    align-items: start;
+}
+
+/* Wrapper establishes stacking context for the relative radar tooltip */
+.radar-chart-wrap {
+    position: relative;
+    width: 420px;
+    height: 420px;
+    flex-shrink: 0;
+}
+
+#radarSvg {
+    display: block;
+    overflow: visible; /* labels outside viewBox clip */
+}
+
+/* Radar grid lines */
+.radar-grid-line {
+    fill: none;
+    stroke: #e8ecf1;
+    stroke-width: 1;
+}
+
+/* Axis spokes */
+.radar-axis-line {
+    stroke: #dde3ec;
+    stroke-width: 1;
+}
+
+/* Axis label */
+.radar-axis-label {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-size: 11px;
+    fill: #6b7a90;
+    text-anchor: middle;
+    dominant-baseline: central;
+}
+
+/* Grid ring value labels */
+.radar-ring-label {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-size: 9px;
+    fill: #aab4c4;
+    text-anchor: middle;
+    dominant-baseline: central;
+    pointer-events: none;
+}
+
+/* Filled data polygon */
+.radar-polygon {
+    transition: opacity 0.2s ease;
+}
+
+/* Data point dots on each axis vertex */
+.radar-dot {
+    transition: r 0.2s ease, opacity 0.2s ease;
+    cursor: pointer;
+}
+
+/* Highlight: dim polygon when a dot is hovered */
+#radarSvg.has-highlight .radar-polygon {
+    opacity: 0.35;
+}
+
+#radarSvg.has-highlight .radar-dot {
+    opacity: 0.28;
+}
+
+#radarSvg.has-highlight .radar-dot.dot-active {
+    opacity: 1 !important;
+    r: 7;                      /* larger radius on active dot */
+    filter: drop-shadow(0 2px 6px rgba(0,0,0,0.22));
+}
+
+/* Legend inside radar view — scrollable if many sources */
+.radar-legend-wrap {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    max-height: 420px;
+    overflow-y: auto;
+    padding-right: 4px;
+}
+
+.radar-legend-wrap::-webkit-scrollbar {
+    width: 4px;
+}
+.radar-legend-wrap::-webkit-scrollbar-track {
+    background: #f4f6f9;
+    border-radius: 99px;
+}
+.radar-legend-wrap::-webkit-scrollbar-thumb {
+    background: #d0d8e6;
+    border-radius: 99px;
+}
+
+/* Radar legend heading */
+.radar-legend-title {
+    font-size: 11px;
+    font-weight: 600;
+    color: #8a96a8;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: 0 8px 4px;
+    border-bottom: 1px solid #f0f2f5;
+    margin-bottom: 2px;
+}
+
+/* Highlighted legend row inside radar view */
+.radar-legend .legend-item.legend-item--active {
+    background: #eef4ff;
+    font-weight: 600;
+}
+
+/* Responsive: stack radar body on narrow screens */
+@media (max-width: 700px) {
+    .radar-body {
+        grid-template-columns: 1fr;
+    }
+
+    .radar-chart-wrap {
+        width: 100%;
+        height: auto;
+    }
+
+    #radarSvg {
+        width: 100%;
+        height: auto;
+    }
+
+    .radar-legend-wrap {
+        max-height: none;
+    }
 }

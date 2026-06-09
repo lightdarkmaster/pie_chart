@@ -26,7 +26,29 @@
                 </div>
                 <h2 class="widget-title">Lead Source Distribution</h2>
             </div>
-            <span class="widget-badge" id="wg-period">All time</span>
+
+            <!-- ── NEW: Chart view toggle ── -->
+            <div class="view-controls">
+                <div class="view-toggle" role="group" aria-label="Chart view">
+                    <button class="view-btn view-btn--active" id="btnDonut" onclick="switchView('donut')" aria-pressed="true" title="Donut chart view">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <circle cx="12" cy="12" r="10"/>
+                            <circle cx="12" cy="12" r="4"/>
+                        </svg>
+                        Donut
+                    </button>
+                    <button class="view-btn" id="btnRadar" onclick="switchView('radar')" aria-pressed="false" title="Radar chart view">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <polygon points="12 2 22 8.5 22 15.5 12 22 2 15.5 2 8.5"/>
+                            <line x1="12" y1="2" x2="12" y2="22"/>
+                            <line x1="2" y1="8.5" x2="22" y2="8.5"/>
+                            <line x1="2" y1="15.5" x2="22" y2="15.5"/>
+                        </svg>
+                        Radar
+                    </button>
+                </div>
+                <span class="widget-badge" id="wg-period">All time</span>
+            </div>
         </div>
 
         <!-- Loading State -->
@@ -45,7 +67,9 @@
             <p id="errorMessage">Unable to load lead data.</p>
         </div>
 
-        <!-- Main Content -->
+        <!-- ══════════════════════════════════════════════
+             Main Content — Donut view (existing)
+        ══════════════════════════════════════════════ -->
         <div id="contentDiv" class="content-layout" style="display:none;">
 
             <!-- LEFT: Donut chart + legend -->
@@ -104,9 +128,62 @@
             </div>
         </div>
 
-    </div>
+        <!-- ══════════════════════════════════════════════
+             NEW: Main Content — Radar view
+             Hidden by default; shown via switchView()
+        ══════════════════════════════════════════════ -->
+        <div id="radarContentDiv" class="radar-layout" style="display:none;">
 
-    <!-- Tooltip: shown on donut segment hover -->
+            <!-- TOP: shared stat cards (same data, shared IDs via JS copy) -->
+            <div class="stats-grid radar-stats" id="radarStatsGrid">
+                <div class="stat-card">
+                    <div class="stat-label">Top source</div>
+                    <div class="stat-value stat-value--md" id="radarStatTopSource">—</div>
+                    <div class="stat-sub" id="radarStatTopCount"></div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Sources tracked</div>
+                    <div class="stat-value" id="radarStatSourceCount">—</div>
+                    <div class="stat-sub">unique channels</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Avg per source</div>
+                    <div class="stat-value" id="radarStatAvg">—</div>
+                    <div class="stat-sub">leads / source</div>
+                </div>
+            </div>
+
+            <!-- BOTTOM: Radar SVG + legend side by side -->
+            <div class="radar-body">
+                <div class="radar-chart-wrap">
+                    <svg id="radarSvg"
+                         width="420" height="420"
+                         viewBox="0 0 420 420"
+                         role="img"
+                         aria-label="Radar chart showing lead source distribution">
+                    </svg>
+                    <!-- Radar tooltip (separate from donut tooltip) -->
+                    <div id="radarTooltip" class="chart-tooltip radar-tooltip" style="display:none;" role="tooltip" aria-live="polite">
+                        <div class="tooltip-source" id="radarTooltipSource"></div>
+                        <div class="tooltip-stats">
+                            <span class="tooltip-count" id="radarTooltipCount"></span>
+                            <span class="tooltip-sep">·</span>
+                            <span class="tooltip-pct" id="radarTooltipPct"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Radar legend — rebuilt by renderRadarChart() -->
+                <div class="radar-legend-wrap">
+                    <div class="legend radar-legend" id="radarLegend"></div>
+                </div>
+            </div>
+
+        </div>
+
+    </div><!-- /widget-root -->
+
+    <!-- Donut tooltip (existing, kept in place) -->
     <div id="chartTooltip" class="chart-tooltip" style="display:none;" role="tooltip" aria-live="polite">
         <div class="tooltip-source" id="tooltipSource"></div>
         <div class="tooltip-stats">
