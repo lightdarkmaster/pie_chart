@@ -38,8 +38,8 @@ body {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-bottom: 20px;
-    padding-bottom: 16px;
+    margin-bottom: 0;            /* filter-bar now sits directly below */
+    padding-bottom: 14px;
     border-bottom: 1px solid #f0f2f5;
     flex-wrap: wrap;
     gap: 10px;
@@ -70,14 +70,14 @@ body {
     letter-spacing: -0.01em;
 }
 
-/* ── NEW: view controls (toggle + badge grouped together) ── */
+/* ── View controls (chart toggle + period badge) ── */
 .view-controls {
     display: flex;
     align-items: center;
     gap: 10px;
 }
 
-/* ── NEW: Donut / Radar toggle pill ── */
+/* ── Donut / Radar toggle pill ── */
 .view-toggle {
     display: flex;
     background: #f4f6f9;
@@ -125,16 +125,11 @@ body {
     font-weight: 500;
     padding: 3px 10px;
     border-radius: 99px;
-    background: #f4f6f9;
-    color: #6b7a90;
-    border: 1px solid #e8ecf1;
-    cursor: pointer;
-    transition: background 0.15s, color 0.15s;
-}
-
-.widget-badge:hover {
     background: #eef4ff;
     color: #3b7dd8;
+    border: 1px solid #c5daf8;
+    white-space: nowrap;
+    transition: background 0.15s, color 0.15s;
 }
 
 /* ── Loading state ── */
@@ -162,6 +157,28 @@ body {
     to { transform: rotate(360deg); }
 }
 
+/* ── Empty state (NEW) ── */
+.empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 52px 20px;
+    gap: 10px;
+    color: #8a96a8;
+    text-align: center;
+}
+
+.empty-state svg {
+    opacity: 0.5;
+}
+
+.empty-state p {
+    font-size: 13px;
+    font-weight: 500;
+    color: #6b7a90;
+}
+
 /* ── Error state ── */
 .error-state {
     display: flex;
@@ -181,6 +198,212 @@ body {
 .error-state p {
     font-size: 13px;
     font-weight: 500;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   NEW — DATE FILTER BAR
+   ══════════════════════════════════════════════════════════════ */
+
+.filter-bar {
+    padding: 12px 0 14px;
+    border-bottom: 1px solid #f0f2f5;
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+}
+
+/* Row of preset pill buttons */
+.filter-presets {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    align-items: center;
+}
+
+/* Base filter pill */
+.filter-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 5px 13px;
+    border-radius: 99px;
+    border: 1px solid #e0e6ef;
+    background: #f7f9fc;
+    color: #5a6778;
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: border-color 0.15s, background 0.15s, color 0.15s, box-shadow 0.15s;
+    font-family: inherit;
+}
+
+.filter-pill:hover:not(.filter-pill--active) {
+    border-color: #a8c4ef;
+    background: #eef4ff;
+    color: #3b7dd8;
+}
+
+/* Active / selected preset */
+.filter-pill--active {
+    background: #3b7dd8;
+    border-color: #3b7dd8;
+    color: #ffffff;
+    font-weight: 600;
+    box-shadow: 0 2px 6px rgba(59, 125, 216, 0.30);
+}
+
+.filter-pill--active svg {
+    stroke: #ffffff;
+}
+
+/* Reset ("All Time") pill — slightly different tint */
+.filter-pill--reset {
+    border-style: dashed;
+    color: #8a96a8;
+}
+
+.filter-pill--reset:hover {
+    border-color: #3b7dd8;
+    color: #3b7dd8;
+    background: #eef4ff;
+}
+
+/* When "All Time" is the active state */
+.filter-pill--reset.filter-pill--active {
+    background: #f4f6f9;
+    border-color: #8a96a8;
+    border-style: solid;
+    color: #1a2332;
+    box-shadow: none;
+}
+
+/* ── Custom range expander ── */
+.filter-custom {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.28s cubic-bezier(0.4, 0, 0.2, 1),
+                opacity    0.22s ease,
+                margin-top 0.22s ease;
+    opacity: 0;
+    margin-top: 0;
+}
+
+.filter-custom.is-open {
+    max-height: 120px;
+    opacity: 1;
+    margin-top: 10px;
+}
+
+.filter-custom__inner {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    gap: 10px;
+    padding: 12px 14px;
+    background: #f7f9fc;
+    border: 1px solid #e0e6ef;
+    border-radius: 10px;
+}
+
+.filter-custom__fields {
+    display: flex;
+    align-items: flex-end;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.date-field {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.date-field__label {
+    font-size: 10.5px;
+    font-weight: 600;
+    color: #8a96a8;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+}
+
+.date-field__input {
+    font-family: inherit;
+    font-size: 12.5px;
+    color: #1a2332;
+    background: #ffffff;
+    border: 1.5px solid #d6deea;
+    border-radius: 7px;
+    padding: 6px 10px;
+    outline: none;
+    cursor: pointer;
+    transition: border-color 0.15s, box-shadow 0.15s;
+    min-width: 130px;
+}
+
+.date-field__input:focus {
+    border-color: #3b7dd8;
+    box-shadow: 0 0 0 3px rgba(59, 125, 216, 0.12);
+}
+
+.date-field__sep {
+    font-size: 14px;
+    color: #aab4c4;
+    padding-bottom: 7px;
+    flex-shrink: 0;
+}
+
+.filter-custom__actions {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+}
+
+/* Apply / Cancel buttons */
+.btn-apply {
+    padding: 6px 16px;
+    background: #3b7dd8;
+    color: #ffffff;
+    border: none;
+    border-radius: 7px;
+    font-size: 12.5px;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: inherit;
+    transition: background 0.15s, box-shadow 0.15s, transform 0.1s;
+    box-shadow: 0 2px 6px rgba(59,125,216,0.25);
+}
+
+.btn-apply:hover  { background: #2f6ec4; box-shadow: 0 3px 10px rgba(59,125,216,0.32); }
+.btn-apply:active { transform: scale(0.97); }
+
+.btn-cancel {
+    padding: 6px 14px;
+    background: transparent;
+    color: #6b7a90;
+    border: 1px solid #d6deea;
+    border-radius: 7px;
+    font-size: 12.5px;
+    font-weight: 500;
+    cursor: pointer;
+    font-family: inherit;
+    transition: background 0.15s, border-color 0.15s;
+}
+
+.btn-cancel:hover { background: #f4f6f9; border-color: #a8bcd4; }
+
+/* Inline validation error */
+.filter-custom__error {
+    width: 100%;
+    font-size: 11.5px;
+    color: #c0392b;
+    min-height: 16px;
+    display: none;          /* shown by JS when there is an error */
+}
+
+.filter-custom__error.is-visible {
+    display: block;
 }
 
 /* ── Content: landscape two-column grid (DONUT VIEW) ── */
@@ -242,7 +465,7 @@ body {
     font-weight: 400;
 }
 
-/* ── Legend (shared styles used by both donut and radar) ── */
+/* ── Legend (shared) ── */
 .legend {
     width: 100%;
     display: flex;
@@ -260,9 +483,7 @@ body {
     transition: background 0.15s;
 }
 
-.legend-item:hover {
-    background: #f7f9fc;
-}
+.legend-item:hover { background: #f7f9fc; }
 
 .legend-dot {
     width: 9px;
@@ -287,7 +508,7 @@ body {
     flex-shrink: 0;
 }
 
-/* ── RIGHT panel (donut view) ── */
+/* ── RIGHT panel ── */
 .panel-right {
     display: flex;
     flex-direction: column;
@@ -359,9 +580,7 @@ table {
     margin-top: 3px;
 }
 
-thead {
-    background: #f7f9fc;
-}
+thead { background: #f7f9fc; }
 
 th {
     padding: 9px 12px;
@@ -382,25 +601,12 @@ td {
     vertical-align: middle;
 }
 
-tbody tr:last-child td {
-    border-bottom: none;
-}
+tbody tr:last-child td { border-bottom: none; }
+tbody tr:hover td     { background: #f9fbfd; }
 
-tbody tr:hover td {
-    background: #f9fbfd;
-}
+.col-dot  { width: 14px; padding-right: 4px; }
+.col-bar  { width: 130px; }
 
-/* Column sizing */
-.col-dot {
-    width: 14px;
-    padding-right: 4px;
-}
-
-.col-bar {
-    width: 130px;
-}
-
-/* Source dot */
 .src-dot {
     display: inline-block;
     width: 8px;
@@ -408,13 +614,8 @@ tbody tr:hover td {
     border-radius: 50%;
 }
 
-/* Count cell */
-.cell-count {
-    font-weight: 600;
-    color: #1a2332;
-}
+.cell-count { font-weight: 600; color: #1a2332; }
 
-/* Bar */
 .bar-track {
     height: 5px;
     background: #edf0f5;
@@ -429,7 +630,6 @@ tbody tr:hover td {
     transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* Percentage chip */
 .pct-chip {
     display: inline-block;
     font-size: 11px;
@@ -439,11 +639,9 @@ tbody tr:hover td {
     white-space: nowrap;
 }
 
-/* ── Responsive: stack on narrow viewports ── */
+/* ── Responsive ── */
 @media (max-width: 680px) {
-    body {
-        padding: 12px;
-    }
+    body { padding: 12px; }
 
     .content-layout {
         grid-template-columns: 1fr;
@@ -456,35 +654,20 @@ tbody tr:hover td {
         gap: 16px;
     }
 
-    .donut-wrap {
-        width: 160px;
-        height: 160px;
-    }
+    .donut-wrap { width: 160px; height: 160px; }
+    #donutSvg   { width: 160px; height: 160px; }
 
-    #donutSvg {
-        width: 160px;
-        height: 160px;
-    }
+    .legend         { flex: 1; min-width: 140px; }
+    .stats-grid     { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .col-bar        { display: none; }
 
-    .legend {
-        flex: 1;
-        min-width: 140px;
-    }
-
-    .stats-grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-
-    .col-bar {
-        display: none;
-    }
+    .filter-presets { gap: 4px; }
+    .filter-pill    { font-size: 11px; padding: 4px 10px; }
 }
 
-/* ============================================================
+/* ══════════════════════════════════════════════════════════════
    ENHANCEMENT 1 — Chart Tooltip
-   (shared by both donut and radar; .radar-tooltip positions
-    relative to the radar-chart-wrap instead of fixed)
-   ============================================================ */
+   ══════════════════════════════════════════════════════════════ */
 
 .chart-tooltip {
     position: fixed;
@@ -524,20 +707,9 @@ tbody tr:hover td {
     font-size: 12px;
 }
 
-.tooltip-count {
-    font-weight: 700;
-    color: #ffffff;
-}
-
-.tooltip-sep {
-    color: #64748b;
-    font-size: 10px;
-}
-
-.tooltip-pct {
-    font-weight: 500;
-    color: #94a3b8;
-}
+.tooltip-count { font-weight: 700; color: #ffffff; }
+.tooltip-sep   { color: #64748b; font-size: 10px; }
+.tooltip-pct   { font-weight: 500; color: #94a3b8; }
 
 .tooltip-swatch {
     display: inline-block;
@@ -549,9 +721,9 @@ tbody tr:hover td {
     flex-shrink: 0;
 }
 
-/* ============================================================
-   ENHANCEMENT 2 — Donut segment highlight state
-   ============================================================ */
+/* ══════════════════════════════════════════════════════════════
+   ENHANCEMENT 2 — Donut segment highlight
+   ══════════════════════════════════════════════════════════════ */
 
 #donutSvg.has-highlight path {
     opacity: 0.28;
@@ -565,13 +737,11 @@ tbody tr:hover td {
     filter: drop-shadow(0 2px 6px rgba(0,0,0,0.18));
 }
 
-/* ============================================================
-   ENHANCEMENT 3 — Table row highlight state
-   ============================================================ */
+/* ══════════════════════════════════════════════════════════════
+   ENHANCEMENT 3 — Table row highlight
+   ══════════════════════════════════════════════════════════════ */
 
-tbody tr.row-active td {
-    background: #eef4ff !important;
-}
+tbody tr.row-active td { background: #eef4ff !important; }
 
 tbody tr.row-active td:nth-child(2) {
     font-weight: 600;
@@ -579,11 +749,10 @@ tbody tr.row-active td:nth-child(2) {
     box-shadow: inset 3px 0 0 #3b7dd8;
 }
 
-/* ============================================================
-   NEW — Radar Chart View
-   ============================================================ */
+/* ══════════════════════════════════════════════════════════════
+   RADAR CHART VIEW
+   ══════════════════════════════════════════════════════════════ */
 
-/* Outer layout: stats on top, chart+legend below */
 .radar-layout {
     display: flex;
     flex-direction: column;
@@ -591,11 +760,6 @@ tbody tr.row-active td:nth-child(2) {
     animation: fadeIn 0.4s ease;
 }
 
-.radar-stats {
-    /* inherits .stats-grid */
-}
-
-/* Bottom row: SVG left, legend right */
 .radar-body {
     display: grid;
     grid-template-columns: 420px 1fr;
@@ -603,7 +767,6 @@ tbody tr.row-active td:nth-child(2) {
     align-items: start;
 }
 
-/* Wrapper establishes stacking context for the relative radar tooltip */
 .radar-chart-wrap {
     position: relative;
     width: 420px;
@@ -613,23 +776,17 @@ tbody tr.row-active td:nth-child(2) {
 
 #radarSvg {
     display: block;
-    overflow: visible; /* labels outside viewBox clip */
+    overflow: visible;
 }
 
-/* Radar grid lines */
 .radar-grid-line {
     fill: none;
     stroke: #e8ecf1;
     stroke-width: 1;
 }
 
-/* Axis spokes */
-.radar-axis-line {
-    stroke: #dde3ec;
-    stroke-width: 1;
-}
+.radar-axis-line   { stroke: #dde3ec; stroke-width: 1; }
 
-/* Axis label */
 .radar-axis-label {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     font-size: 11px;
@@ -638,7 +795,6 @@ tbody tr.row-active td:nth-child(2) {
     dominant-baseline: central;
 }
 
-/* Grid ring value labels */
 .radar-ring-label {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     font-size: 9px;
@@ -648,33 +804,22 @@ tbody tr.row-active td:nth-child(2) {
     pointer-events: none;
 }
 
-/* Filled data polygon */
-.radar-polygon {
-    transition: opacity 0.2s ease;
-}
+.radar-polygon { transition: opacity 0.2s ease; }
 
-/* Data point dots on each axis vertex */
 .radar-dot {
     transition: r 0.2s ease, opacity 0.2s ease;
     cursor: pointer;
 }
 
-/* Highlight: dim polygon when a dot is hovered */
-#radarSvg.has-highlight .radar-polygon {
-    opacity: 0.35;
-}
-
-#radarSvg.has-highlight .radar-dot {
-    opacity: 0.28;
-}
+#radarSvg.has-highlight .radar-polygon { opacity: 0.35; }
+#radarSvg.has-highlight .radar-dot     { opacity: 0.28; }
 
 #radarSvg.has-highlight .radar-dot.dot-active {
     opacity: 1 !important;
-    r: 7;                      /* larger radius on active dot */
+    r: 7;
     filter: drop-shadow(0 2px 6px rgba(0,0,0,0.22));
 }
 
-/* Legend inside radar view — scrollable if many sources */
 .radar-legend-wrap {
     display: flex;
     flex-direction: column;
@@ -684,19 +829,10 @@ tbody tr.row-active td:nth-child(2) {
     padding-right: 4px;
 }
 
-.radar-legend-wrap::-webkit-scrollbar {
-    width: 4px;
-}
-.radar-legend-wrap::-webkit-scrollbar-track {
-    background: #f4f6f9;
-    border-radius: 99px;
-}
-.radar-legend-wrap::-webkit-scrollbar-thumb {
-    background: #d0d8e6;
-    border-radius: 99px;
-}
+.radar-legend-wrap::-webkit-scrollbar       { width: 4px; }
+.radar-legend-wrap::-webkit-scrollbar-track { background: #f4f6f9; border-radius: 99px; }
+.radar-legend-wrap::-webkit-scrollbar-thumb { background: #d0d8e6; border-radius: 99px; }
 
-/* Radar legend heading */
 .radar-legend-title {
     font-size: 11px;
     font-weight: 600;
@@ -708,29 +844,11 @@ tbody tr.row-active td:nth-child(2) {
     margin-bottom: 2px;
 }
 
-/* Highlighted legend row inside radar view */
-.radar-legend .legend-item.legend-item--active {
-    background: #eef4ff;
-    font-weight: 600;
-}
+.radar-legend .legend-item.legend-item--active { background: #eef4ff; font-weight: 600; }
 
-/* Responsive: stack radar body on narrow screens */
 @media (max-width: 700px) {
-    .radar-body {
-        grid-template-columns: 1fr;
-    }
-
-    .radar-chart-wrap {
-        width: 100%;
-        height: auto;
-    }
-
-    #radarSvg {
-        width: 100%;
-        height: auto;
-    }
-
-    .radar-legend-wrap {
-        max-height: none;
-    }
+    .radar-body            { grid-template-columns: 1fr; }
+    .radar-chart-wrap      { width: 100%; height: auto; }
+    #radarSvg              { width: 100%; height: auto; }
+    .radar-legend-wrap     { max-height: none; }
 }

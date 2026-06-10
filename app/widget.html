@@ -13,90 +13,151 @@
 
     <div class="widget-root">
 
-        <!-- Header -->
+        <!-- ══ HEADER ══════════════════════════════════════════ -->
         <div class="widget-header">
             <div class="widget-header-left">
                 <div class="widget-icon">
-                    <!-- <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                         stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                         <path d="M12 2a10 10 0 1 0 10 10"/>
                         <path d="M12 2a10 10 0 0 1 10 10"/>
                         <path d="M12 12 2.1 9.1"/>
                         <path d="M12 12v-10"/>
-                    </svg> -->
-
-                    <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-                    <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-                    <!-- License: CC Attribution. Made by  Luciano Jung: https://lucianojung.de/ -->
-                    <svg width="800px" height="800px" viewBox="0 -1.5 2253 2253" version="1.1"
-                        xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-                        xml:space="preserve" xmlns:serif="http://www.serif.com/"
-                        style="fill-rule:evenodd;clip-rule:evenodd;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:1.5;">
-                        <rect id="donut_chart" x="1.997" y="0" width="2250" height="2250" style="fill:none;" />
-                        <path
-                            d="M1147.83,208.333c-517.767,0 -937.5,419.733 -937.5,937.5c-0,428.307 290.274,802.155 705.228,908.271l116.136,-454.135c-207.477,-53.058 -352.614,-239.982 -352.614,-454.136c-0,-258.883 209.866,-468.75 468.75,-468.75l-0,-468.75Z"
-                            style="fill:#1c4e80;stroke:#202020;stroke-width:66.67px;" />
-                        <path
-                            d="M1997.49,749.576c-153.977,-330.174 -485.321,-541.243 -849.663,-541.243l-0,468.704c182.171,0 347.843,105.535 424.832,270.622l424.831,-198.083Z"
-                            style="fill:#ea6a47;stroke:#202020;stroke-width:66.67px;" />
-                        <path
-                            d="M905.188,2051.39c500.124,134.008 1014.19,-162.788 1148.2,-662.913c64.353,-240.168 30.664,-496.064 -93.656,-711.393l-405.95,234.375c62.16,107.665 79.005,235.613 46.828,355.697c-67.003,250.062 -324.036,398.46 -574.099,331.456l-121.321,452.778Z"
-                            style="fill:#eee;stroke:#202020;stroke-width:66.67px;" />
                     </svg>
                 </div>
                 <h2 class="widget-title">Lead Source Distribution</h2>
             </div>
 
-            <!-- ── NEW: Chart view toggle ── -->
+            <!-- Chart-view toggle + period badge -->
             <div class="view-controls">
                 <div class="view-toggle" role="group" aria-label="Chart view">
-                    <button class="view-btn view-btn--active" id="btnDonut" onclick="switchView('donut')"
-                        aria-pressed="true" title="Donut chart view">
+                    <button class="view-btn view-btn--active" id="btnDonut"
+                            onclick="switchView('donut')" aria-pressed="true" title="Donut chart view">
                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                            <circle cx="12" cy="12" r="10" />
-                            <circle cx="12" cy="12" r="4" />
+                             stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="4"/>
                         </svg>
                         Donut
                     </button>
-                    <button class="view-btn" id="btnRadar" onclick="switchView('radar')" aria-pressed="false"
-                        title="Radar chart view">
+                    <button class="view-btn" id="btnRadar"
+                            onclick="switchView('radar')" aria-pressed="false" title="Radar chart view">
                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                            <polygon points="12 2 22 8.5 22 15.5 12 22 2 15.5 2 8.5" />
-                            <line x1="12" y1="2" x2="12" y2="22" />
-                            <line x1="2" y1="8.5" x2="22" y2="8.5" />
-                            <line x1="2" y1="15.5" x2="22" y2="15.5" />
+                             stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <polygon points="12 2 22 8.5 22 15.5 12 22 2 15.5 2 8.5"/>
+                            <line x1="12" y1="2" x2="12" y2="22"/>
+                            <line x1="2" y1="8.5" x2="22" y2="8.5"/>
+                            <line x1="2" y1="15.5" x2="22" y2="15.5"/>
                         </svg>
                         Radar
                     </button>
                 </div>
-                <span class="widget-badge" id="wg-period">All time</span>
+                <!-- ── NEW: active-filter badge (read-only, updated by JS) ── -->
+                <span class="widget-badge" id="wg-period">Past 7 Days</span>
             </div>
         </div>
 
-        <!-- Loading State -->
+        <!-- ══ NEW: DATE FILTER BAR ═════════════════════════════
+             Sits between the header and the content panels.
+             Contains preset pill buttons + an inline custom-range
+             expander. All interaction handled in scripts.js via
+             onPresetClick() / onCustomApply() / onFilterReset().
+        ════════════════════════════════════════════════════════ -->
+        <div class="filter-bar" id="filterBar" role="toolbar" aria-label="Date filter">
+
+            <!-- Preset pills -->
+            <div class="filter-presets">
+                <button class="filter-pill" data-preset="today"
+                        onclick="onPresetClick(this, 'today')">Today</button>
+                <button class="filter-pill" data-preset="yesterday"
+                        onclick="onPresetClick(this, 'yesterday')">Yesterday</button>
+                <button class="filter-pill filter-pill--active" data-preset="past_week"
+                        onclick="onPresetClick(this, 'past_week')">Past Week</button>
+                <button class="filter-pill" data-preset="prev_week"
+                        onclick="onPresetClick(this, 'prev_week')">Previous Week</button>
+                <button class="filter-pill" data-preset="last_month"
+                        onclick="onPresetClick(this, 'last_month')">Last Month</button>
+                <button class="filter-pill" data-preset="custom"
+                        onclick="onPresetClick(this, 'custom')">
+                    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                         stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+                        <line x1="16" y1="2" x2="16" y2="6"/>
+                        <line x1="8"  y1="2" x2="8"  y2="6"/>
+                        <line x1="3"  y1="10" x2="21" y2="10"/>
+                    </svg>
+                    Custom Range
+                </button>
+                <!-- All-records reset -->
+                <button class="filter-pill filter-pill--reset" id="btnAllTime"
+                        onclick="onFilterReset()" title="Remove date filter — show all records">
+                    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                         stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <polyline points="1 4 1 10 7 10"/>
+                        <path d="M3.51 15a9 9 0 1 0 .49-4.28"/>
+                    </svg>
+                    All Time
+                </button>
+            </div>
+
+            <!-- ── Custom range expander (hidden until 'custom' preset picked) ── -->
+            <div class="filter-custom" id="filterCustom" aria-hidden="true">
+                <div class="filter-custom__inner">
+                    <div class="filter-custom__fields">
+                        <div class="date-field">
+                            <label class="date-field__label" for="dateStart">From</label>
+                            <input class="date-field__input" type="date" id="dateStart"
+                                   aria-label="Start date" />
+                        </div>
+                        <span class="date-field__sep">→</span>
+                        <div class="date-field">
+                            <label class="date-field__label" for="dateEnd">To</label>
+                            <input class="date-field__input" type="date" id="dateEnd"
+                                   aria-label="End date" />
+                        </div>
+                    </div>
+                    <div class="filter-custom__actions">
+                        <button class="btn-apply" id="btnApplyCustom"
+                                onclick="onCustomApply()">Apply</button>
+                        <button class="btn-cancel" onclick="onCustomCancel()">Cancel</button>
+                    </div>
+                    <!-- Inline validation message -->
+                    <p class="filter-custom__error" id="customDateError" aria-live="polite"></p>
+                </div>
+            </div>
+
+        </div><!-- /filter-bar -->
+
+        <!-- ══ LOADING ══════════════════════════════════════════ -->
         <div id="loadingDiv" class="loading-state">
             <div class="spinner"></div>
-            <p>Loading lead data...</p>
+            <p id="loadingMsg">Loading lead data...</p>
         </div>
 
-        <!-- Error State -->
+        <!-- ══ EMPTY STATE (NEW — shown when filter returns 0 leads) ══ -->
+        <div id="emptyDiv" class="empty-state" style="display:none;">
+            <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                 stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <circle cx="11" cy="11" r="8"/>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+            </svg>
+            <p id="emptyMessage">No leads found for this date range.</p>
+            <button class="btn-apply" onclick="onFilterReset()" style="margin-top:8px;">View All Time</button>
+        </div>
+
+        <!-- ══ ERROR ════════════════════════════════════════════ -->
         <div id="errorDiv" class="error-state" style="display:none;">
-            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
-                stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <circle cx="12" cy="12" r="10" />
-                <line x1="12" y1="8" x2="12" y2="12" />
-                <line x1="12" y1="16" x2="12.01" y2="16" />
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                 stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <circle cx="12" cy="12" r="10"/>
+                <line x1="12" y1="8" x2="12" y2="12"/>
+                <line x1="12" y1="16" x2="12.01" y2="16"/>
             </svg>
             <p id="errorMessage">Unable to load lead data.</p>
         </div>
 
-        <!-- ══════════════════════════════════════════════
-             Main Content — Donut view (existing)
-        ══════════════════════════════════════════════ -->
+        <!-- ══ DONUT VIEW ════════════════════════════════════════ -->
         <div id="contentDiv" class="content-layout" style="display:none;">
 
-            <!-- LEFT: Donut chart + legend -->
             <div class="panel-left">
                 <div class="donut-wrap">
                     <svg id="donutSvg" width="200" height="200" viewBox="0 0 200 200" role="img">
@@ -107,14 +168,10 @@
                         <span class="donut-label">total leads</span>
                     </div>
                 </div>
-
                 <div class="legend" id="legend"></div>
             </div>
 
-            <!-- RIGHT: Stats + Table -->
             <div class="panel-right">
-
-                <!-- Stat cards -->
                 <div class="stats-grid">
                     <div class="stat-card">
                         <div class="stat-label">Top source</div>
@@ -133,7 +190,6 @@
                     </div>
                 </div>
 
-                <!-- Data table -->
                 <div class="table-wrap">
                     <table id="dataTable">
                         <thead>
@@ -148,17 +204,12 @@
                         <tbody id="tableBody"></tbody>
                     </table>
                 </div>
-
             </div>
         </div>
 
-        <!-- ══════════════════════════════════════════════
-             NEW: Main Content — Radar view
-             Hidden by default; shown via switchView()
-        ══════════════════════════════════════════════ -->
+        <!-- ══ RADAR VIEW ════════════════════════════════════════ -->
         <div id="radarContentDiv" class="radar-layout" style="display:none;">
 
-            <!-- TOP: shared stat cards (same data, shared IDs via JS copy) -->
             <div class="stats-grid radar-stats" id="radarStatsGrid">
                 <div class="stat-card">
                     <div class="stat-label">Top source</div>
@@ -177,25 +228,21 @@
                 </div>
             </div>
 
-            <!-- BOTTOM: Radar SVG + legend side by side -->
             <div class="radar-body">
                 <div class="radar-chart-wrap">
-                    <svg id="radarSvg" width="420" height="420" viewBox="0 0 420 420" role="img"
-                        aria-label="Radar chart showing lead source distribution">
+                    <svg id="radarSvg" width="420" height="420" viewBox="0 0 420 420"
+                         role="img" aria-label="Radar chart showing lead source distribution">
                     </svg>
-                    <!-- Radar tooltip (separate from donut tooltip) -->
-                    <div id="radarTooltip" class="chart-tooltip radar-tooltip" style="display:none;" role="tooltip"
-                        aria-live="polite">
+                    <div id="radarTooltip" class="chart-tooltip radar-tooltip"
+                         style="display:none;" role="tooltip" aria-live="polite">
                         <div class="tooltip-source" id="radarTooltipSource"></div>
                         <div class="tooltip-stats">
                             <span class="tooltip-count" id="radarTooltipCount"></span>
                             <span class="tooltip-sep">·</span>
-                            <span class="tooltip-pct" id="radarTooltipPct"></span>
+                            <span class="tooltip-pct"   id="radarTooltipPct"></span>
                         </div>
                     </div>
                 </div>
-
-                <!-- Radar legend — rebuilt by renderRadarChart() -->
                 <div class="radar-legend-wrap">
                     <div class="legend radar-legend" id="radarLegend"></div>
                 </div>
@@ -205,21 +252,20 @@
 
     </div><!-- /widget-root -->
 
-    <!-- Donut tooltip (existing, kept in place) -->
+    <!-- Donut tooltip (outside widget-root so z-index is unaffected) -->
     <div id="chartTooltip" class="chart-tooltip" style="display:none;" role="tooltip" aria-live="polite">
         <div class="tooltip-source" id="tooltipSource"></div>
         <div class="tooltip-stats">
             <span class="tooltip-count" id="tooltipCount"></span>
             <span class="tooltip-sep">·</span>
-            <span class="tooltip-pct" id="tooltipPct"></span>
+            <span class="tooltip-pct"   id="tooltipPct"></span>
         </div>
     </div>
 
     <script src="./scripts/scripts.js"></script>
 </body>
 <footer>
-    <p class="footer-note">Data is based on the "Lead Source" field in your CRM. Last updated: <span
-            id="lastUpdated">—</span>.</p>
+    <p class="footer-note">Data is based on the "Lead Source" field in your CRM. Last updated: <span id="lastUpdated">—</span>.</p>
     <p class="footer-note">By: Christian Barbosa, May 29, 2026 (Fri: 10:40:42 AM)</p>
 </footer>
 
