@@ -62,7 +62,7 @@ var totalLeads        = 0;       /* filteredLeads.length           */
 var currentView       = 'donut'; /* 'donut' | 'radar'             */
 
 /* ── Active filter state ── */
-var activePreset      = 'past_week';  /* default on load           */
+var activePreset      = 'all_time';  /* default on load           */
 var activeCustomStart = null;         /* Date | null               */
 var activeCustomEnd   = null;         /* Date | null               */
 
@@ -84,7 +84,7 @@ var LIGHT_COLORS = [
 ZOHO.embeddedApp.on('PageLoad', function (data) {
     console.log('[Widget] PageLoad fired');
     /* Set default pill active state visually */
-    setActivePill('past_week');
+    setActivePill('all_time');
     fetchAllLeads();
 });
 
