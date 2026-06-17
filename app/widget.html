@@ -16,14 +16,31 @@
         <!-- ══ HEADER ══════════════════════════════════════════ -->
         <div class="widget-header">
             <div class="widget-header-left">
-                <div class="widget-icon">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                <div class="table-icon">
+                    <!-- <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                          stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                         <path d="M12 2a10 10 0 1 0 10 10"/>
                         <path d="M12 2a10 10 0 0 1 10 10"/>
                         <path d="M12 12 2.1 9.1"/>
                         <path d="M12 12v-10"/>
+                    </svg> -->
+                    <?xml version="1.0" encoding="iso-8859-1"?>
+                    <!-- Generator: Adobe Illustrator 18.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+                    <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+                    <!-- License: CC0. Made by SVG Repo: https://www.svgrepo.com/svg/28705/graph -->
+                    <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg"
+                        xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 60 60"
+                        style="enable-background:new 0 0 60 60;" xml:space="preserve">
+                        <g>
+                            <rect x="32" y="7" style="fill:#14A085;" width="10" height="45" />
+                            <rect x="17" y="38" style="fill:#F29C1F;" width="10" height="14" />
+                            <rect x="2" y="29" style="fill:#E57E25;" width="10" height="23" />
+                            <rect x="47" y="15" style="fill:#71C285;" width="10" height="37" />
+                            <path style="fill:#556080;"
+                                d="M59,53H1c-0.552,0-1-0.447-1-1s0.448-1,1-1h58c0.552,0,1,0.447,1,1S59.552,53,59,53z" />
+                        </g>
                     </svg>
+
                 </div>
                 <h2 class="widget-title">Lead Source Distribution</h2>
             </div>
@@ -31,22 +48,23 @@
             <!-- Chart-view toggle + period badge -->
             <div class="view-controls">
                 <div class="view-toggle" role="group" aria-label="Chart view">
-                    <button class="view-btn view-btn--active" id="btnDonut"
-                            onclick="switchView('donut')" aria-pressed="true" title="Donut chart view">
+                    <button class="view-btn view-btn--active" id="btnDonut" onclick="switchView('donut')"
+                        aria-pressed="true" title="Donut chart view">
                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                             stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                            <circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="4"/>
+                            stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <circle cx="12" cy="12" r="10" />
+                            <circle cx="12" cy="12" r="4" />
                         </svg>
                         Donut
                     </button>
-                    <button class="view-btn" id="btnRadar"
-                            onclick="switchView('radar')" aria-pressed="false" title="Radar chart view">
+                    <button class="view-btn" id="btnRadar" onclick="switchView('radar')" aria-pressed="false"
+                        title="Radar chart view">
                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                             stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                            <polygon points="12 2 22 8.5 22 15.5 12 22 2 15.5 2 8.5"/>
-                            <line x1="12" y1="2" x2="12" y2="22"/>
-                            <line x1="2" y1="8.5" x2="22" y2="8.5"/>
-                            <line x1="2" y1="15.5" x2="22" y2="15.5"/>
+                            stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <polygon points="12 2 22 8.5 22 15.5 12 22 2 15.5 2 8.5" />
+                            <line x1="12" y1="2" x2="12" y2="22" />
+                            <line x1="2" y1="8.5" x2="22" y2="8.5" />
+                            <line x1="2" y1="15.5" x2="22" y2="15.5" />
                         </svg>
                         Radar
                     </button>
@@ -66,34 +84,32 @@
 
             <!-- Preset pills -->
             <div class="filter-presets">
-                <button class="filter-pill" data-preset="today"
-                        onclick="onPresetClick(this, 'today')">Today</button>
+                <button class="filter-pill" data-preset="today" onclick="onPresetClick(this, 'today')">Today</button>
                 <button class="filter-pill" data-preset="yesterday"
-                        onclick="onPresetClick(this, 'yesterday')">Yesterday</button>
+                    onclick="onPresetClick(this, 'yesterday')">Yesterday</button>
                 <button class="filter-pill filter-pill--active" data-preset="past_week"
-                        onclick="onPresetClick(this, 'past_week')">Past Week</button>
-                <button class="filter-pill" data-preset="prev_week"
-                        onclick="onPresetClick(this, 'prev_week')">Previous Week</button>
-                <button class="filter-pill" data-preset="last_month"
-                        onclick="onPresetClick(this, 'last_month')">Last Month</button>
-                <button class="filter-pill" data-preset="custom"
-                        onclick="onPresetClick(this, 'custom')">
-                    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                         stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                        <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
-                        <line x1="16" y1="2" x2="16" y2="6"/>
-                        <line x1="8"  y1="2" x2="8"  y2="6"/>
-                        <line x1="3"  y1="10" x2="21" y2="10"/>
+                    onclick="onPresetClick(this, 'past_week')">Past Week</button>
+                <button class="filter-pill" data-preset="prev_week" onclick="onPresetClick(this, 'prev_week')">Previous
+                    Week</button>
+                <button class="filter-pill" data-preset="last_month" onclick="onPresetClick(this, 'last_month')">Last
+                    Month</button>
+                <button class="filter-pill" data-preset="custom" onclick="onPresetClick(this, 'custom')">
+                    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+                        stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+                        <line x1="16" y1="2" x2="16" y2="6" />
+                        <line x1="8" y1="2" x2="8" y2="6" />
+                        <line x1="3" y1="10" x2="21" y2="10" />
                     </svg>
                     Custom Range
                 </button>
                 <!-- All-records reset -->
-                <button class="filter-pill filter-pill--reset" id="btnAllTime"
-                        onclick="onFilterReset()" title="Remove date filter — show all records">
-                    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                         stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                        <polyline points="1 4 1 10 7 10"/>
-                        <path d="M3.51 15a9 9 0 1 0 .49-4.28"/>
+                <button class="filter-pill filter-pill--reset" id="btnAllTime" onclick="onFilterReset()"
+                    title="Remove date filter — show all records">
+                    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+                        stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <polyline points="1 4 1 10 7 10" />
+                        <path d="M3.51 15a9 9 0 1 0 .49-4.28" />
                     </svg>
                     All Time
                 </button>
@@ -105,19 +121,16 @@
                     <div class="filter-custom__fields">
                         <div class="date-field">
                             <label class="date-field__label" for="dateStart">From</label>
-                            <input class="date-field__input" type="date" id="dateStart"
-                                   aria-label="Start date" />
+                            <input class="date-field__input" type="date" id="dateStart" aria-label="Start date" />
                         </div>
                         <span class="date-field__sep">→</span>
                         <div class="date-field">
                             <label class="date-field__label" for="dateEnd">To</label>
-                            <input class="date-field__input" type="date" id="dateEnd"
-                                   aria-label="End date" />
+                            <input class="date-field__input" type="date" id="dateEnd" aria-label="End date" />
                         </div>
                     </div>
                     <div class="filter-custom__actions">
-                        <button class="btn-apply" id="btnApplyCustom"
-                                onclick="onCustomApply()">Apply</button>
+                        <button class="btn-apply" id="btnApplyCustom" onclick="onCustomApply()">Apply</button>
                         <button class="btn-cancel" onclick="onCustomCancel()">Cancel</button>
                     </div>
                     <!-- Inline validation message -->
@@ -135,10 +148,10 @@
 
         <!-- ══ EMPTY STATE (NEW — shown when filter returns 0 leads) ══ -->
         <div id="emptyDiv" class="empty-state" style="display:none;">
-            <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                 stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <circle cx="11" cy="11" r="8"/>
-                <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+            <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"
+                stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <circle cx="11" cy="11" r="8" />
+                <line x1="21" y1="21" x2="16.65" y2="16.65" />
             </svg>
             <p id="emptyMessage">No leads found for this date range.</p>
             <button class="btn-apply" onclick="onFilterReset()" style="margin-top:8px;">View All Time</button>
@@ -146,11 +159,11 @@
 
         <!-- ══ ERROR ════════════════════════════════════════════ -->
         <div id="errorDiv" class="error-state" style="display:none;">
-            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                 stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <circle cx="12" cy="12" r="10"/>
-                <line x1="12" y1="8" x2="12" y2="12"/>
-                <line x1="12" y1="16" x2="12.01" y2="16"/>
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
+                stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <circle cx="12" cy="12" r="10" />
+                <line x1="12" y1="8" x2="12" y2="12" />
+                <line x1="12" y1="16" x2="12.01" y2="16" />
             </svg>
             <p id="errorMessage">Unable to load lead data.</p>
         </div>
@@ -230,16 +243,16 @@
 
             <div class="radar-body">
                 <div class="radar-chart-wrap">
-                    <svg id="radarSvg" width="420" height="420" viewBox="0 0 420 420"
-                         role="img" aria-label="Radar chart showing lead source distribution">
+                    <svg id="radarSvg" width="420" height="420" viewBox="0 0 420 420" role="img"
+                        aria-label="Radar chart showing lead source distribution">
                     </svg>
-                    <div id="radarTooltip" class="chart-tooltip radar-tooltip"
-                         style="display:none;" role="tooltip" aria-live="polite">
+                    <div id="radarTooltip" class="chart-tooltip radar-tooltip" style="display:none;" role="tooltip"
+                        aria-live="polite">
                         <div class="tooltip-source" id="radarTooltipSource"></div>
                         <div class="tooltip-stats">
                             <span class="tooltip-count" id="radarTooltipCount"></span>
                             <span class="tooltip-sep">·</span>
-                            <span class="tooltip-pct"   id="radarTooltipPct"></span>
+                            <span class="tooltip-pct" id="radarTooltipPct"></span>
                         </div>
                     </div>
                 </div>
@@ -258,14 +271,15 @@
         <div class="tooltip-stats">
             <span class="tooltip-count" id="tooltipCount"></span>
             <span class="tooltip-sep">·</span>
-            <span class="tooltip-pct"   id="tooltipPct"></span>
+            <span class="tooltip-pct" id="tooltipPct"></span>
         </div>
     </div>
 
     <script src="./scripts/scripts.js"></script>
 </body>
 <footer>
-    <p class="footer-note">Data is based on the "Lead Source" field in your CRM. Last updated: <span id="lastUpdated">—</span>.</p>
+    <p class="footer-note">Data is based on the "Lead Source" field in your CRM. Last updated: <span
+            id="lastUpdated">—</span>.</p>
     <p class="footer-note">By: Christian Barbosa, May 29, 2026 (Fri: 10:40:42 AM)</p>
 </footer>
 
